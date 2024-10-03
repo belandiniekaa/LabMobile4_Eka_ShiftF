@@ -1,8 +1,4 @@
-# LabMobile4_Eka_ShiftF
-
-Praktikum Pemrograman Mobile - Pertemuan 4
-
-## Tugas Pertemuan 4
+# Tugas Pertemuan 4
 
 **Nama** : Eka Belandini  
 **NIM** : H1D022002  
@@ -44,9 +40,9 @@ Berikut adalah beberapa screenshot dari aplikasi yang menunjukkan tampilan dan f
 
 <img src="tambah.png" alt="Screenshot Tambah Produk" width="200"/>
 
-### Screenshot Edit Produk
+### Screenshot Ubah Produk
 
-<img src="ubah.png" alt="Screenshot Edit Produk" width="200"/>
+<img src="ubah.png" alt="Screenshot Ubah Produk" width="200"/>
 
 ### Screenshot Hapus Produk
 
