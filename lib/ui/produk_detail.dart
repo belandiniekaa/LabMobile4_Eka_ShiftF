@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tokokita/bloc/produk_bloc.dart';
 import 'package:tokokita/model/produk.dart';
 import 'package:tokokita/ui/produk_form.dart';
+import 'package:tokokita/ui/produk_page.dart';
+import 'package:tokokita/widget/warning_dialog.dart';
 
 class ProdukDetail extends StatefulWidget {
-  Produk? produk;
+  final Produk? produk;
 
   ProdukDetail({Key? key, this.produk}) : super(key: key);
 
@@ -12,39 +15,33 @@ class ProdukDetail extends StatefulWidget {
 }
 
 class _ProdukDetailState extends State<ProdukDetail> {
+  bool _isLoading = false; // Loading state
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Detail Produk Ebel',
-          style: TextStyle(color: Colors.white), // Warna font AppBar
-        ),
-        backgroundColor: const Color(0xFFF1A7B5), // Warna pink soft untuk AppBar
+        title: const Text('Detail Produk'),
       ),
-      body: Container(
-        color: const Color(0xFFFFF0F5), // Latar belakang pink soft
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Kode : ${widget.produk!.kodeProduk}",
-                style: const TextStyle(fontSize: 20.0, color: Color(0xFF9B4F80)), // Warna font
-              ),
-              Text(
-                "Nama : ${widget.produk!.namaProduk}",
-                style: const TextStyle(fontSize: 18.0, color: Color(0xFF9B4F80)), // Warna font
-              ),
-              Text(
-                "Harga : Rp. ${widget.produk!.hargaProduk.toString()}",
-                style: const TextStyle(fontSize: 18.0, color: Color(0xFF9B4F80)), // Warna font
-              ),
-              const SizedBox(height: 20), // Spasi
-              _tombolHapusEdit(),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Kode : ${widget.produk?.kodeProduk ?? 'N/A'}",
+              style: const TextStyle(fontSize: 20.0),
+            ),
+            Text(
+              "Nama : ${widget.produk?.namaProduk ?? 'N/A'}",
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              "Harga : Rp. ${widget.produk?.hargaProduk.toString() ?? '0'}",
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            _tombolHapusEdit(),
+            if (_isLoading) const CircularProgressIndicator(), // Loading indicator
+          ],
         ),
       ),
     );
@@ -54,12 +51,9 @@ class _ProdukDetailState extends State<ProdukDetail> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        // Tombol Edit
         OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: const Color(0xFFF1A7B5), // Warna font tombol
-            side: const BorderSide(color: Color(0xFFF1A7B5)), // Warna border tombol
-          ),
-          child: const Text("EDIT EBEL"),
+          child: const Text("EDIT"),
           onPressed: () {
             Navigator.push(
               context,
@@ -71,13 +65,9 @@ class _ProdukDetailState extends State<ProdukDetail> {
             );
           },
         ),
-        const SizedBox(width: 10), // Spasi antara tombol
+        // Tombol Hapus
         OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: const Color(0xFFF1A7B5), // Warna font tombol
-            side: const BorderSide(color: Color(0xFFF1A7B5)), // Warna border tombol
-          ),
-          child: const Text("DELETE EBEL"),
+          child: const Text("DELETE"),
           onPressed: () => confirmHapus(),
         ),
       ],
@@ -85,34 +75,68 @@ class _ProdukDetailState extends State<ProdukDetail> {
   }
 
   void confirmHapus() {
-    AlertDialog alertDialog = AlertDialog(
-      content: const Text(
-        "Yakin ingin menghapus data ini?",
-        style: TextStyle(color: Color(0xFF9B4F80)), // Warna font dialog
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text("Yakin ingin menghapus data ini?"),
+        actions: [
+          // Tombol hapus
+          OutlinedButton(
+            child: const Text("Ya"),
+            onPressed: () {
+              _deleteProduk();
+            },
+          ),
+          // Tombol batal
+          OutlinedButton(
+            child: const Text("Batal"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
       ),
-      actions: [
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: const Color(0xFFF1A7B5), // Warna font tombol
-            side: const BorderSide(color: Color(0xFFF1A7B5)), // Warna border tombol
-          ),
-          child: const Text("Ya, Ebel"),
-          onPressed: () {
-            // Tambahkan logika untuk menghapus data produk
-            Navigator.pop(context);
-          },
-        ),
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: const Color(0xFFF1A7B5), // Warna font tombol
-            side: const BorderSide(color: Color(0xFFF1A7B5)), // Warna border tombol
-          ),
-          child: const Text("Batal, Ebel"),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
     );
+  }
 
-    showDialog(builder: (context) => alertDialog, context: context);
+  void _deleteProduk() {
+    setState(() {
+      _isLoading = true; // Set loading to true
+    });
+
+void _deleteProduk() {
+  setState(() {
+    _isLoading = true; // Set loading to true
+  });
+
+  ProdukBloc.deleteProduk(id: int.parse(widget.produk!.id!)).then(
+    (value) {
+      if (value) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ProdukPage(),
+        ));
+      } else {
+        // Jika respons delete tidak sukses
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const WarningDialog(
+            description: "Hapus gagal, silahkan coba lagi",
+          ),
+        );
+      }
+    },
+    onError: (error) {
+      // Jika ada error pada request
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const WarningDialog(
+          description: "Terjadi kesalahan, silakan coba lagi",
+        ),
+      );
+    },
+  ).whenComplete(() {
+    setState(() {
+      _isLoading = false; // Reset loading state
+    });
+  });
+}
   }
 }

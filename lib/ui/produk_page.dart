@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tokokita/bloc/logout_bloc.dart';
+import 'package:tokokita/bloc/produk_bloc.dart';
 import 'package:tokokita/model/produk.dart';
+import 'package:tokokita/ui/login_page.dart';
 import 'package:tokokita/ui/produk_detail.dart';
 import 'package:tokokita/ui/produk_form.dart';
 
@@ -15,80 +18,71 @@ class _ProdukPageState extends State<ProdukPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'List Produk Ebel',
-          style: TextStyle(color: Colors.white), // Warna font AppBar
-        ),
-        backgroundColor: const Color(0xFFF1A7B5), // Warna pink soft untuk AppBar
+        title: const Text('List Produk'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: const Icon(
-                Icons.add,
-                size: 26.0,
-                color: Colors.white, // Warna icon tambah
-              ),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProdukForm()),
-                );
-              },
-            ),
+          IconButton(
+            icon: const Icon(Icons.add, size: 26.0),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProdukForm()),
+              );
+            },
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          color: const Color(0xFFFFF0F5), // Latar belakang drawer
-          child: ListView(
-            children: [
-              ListTile(
-                title: const Text(
-                  'Logout Ebel',
-                  style: TextStyle(color: Color(0xFF9B4F80)), // Warna font menu
-                ),
-                trailing: const Icon(Icons.logout, color: Color(0xFF9B4F80)), // Warna icon logout
-                onTap: () async {
-                  // Logika logout
-                },
-              ),
-            ],
+      drawer: _buildDrawer(),
+      body: FutureBuilder<List<Produk>>(
+        future: ProdukBloc.getProduks(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            return ListProduk(list: snapshot.data!);
+          } else {
+            return const Center(child: Text('No data found'));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          ListTile(
+            title: const Text('Logout'),
+            trailing: const Icon(Icons.logout),
+            onTap: () async {
+              await LogoutBloc.logout().then((value) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (route) => false,
+                );
+              });
+            },
           ),
-        ),
+        ],
       ),
-      body: Container(
-        color: const Color(0xFFFFF0F5), // Latar belakang konten
-        child: ListView(
-          children: [
-            ItemProduk(
-              produk: Produk(
-                id: 1,
-                kodeProduk: 'A001',
-                namaProduk: 'Kamera Ebel',
-                hargaProduk: 5000000,
-              ),
-            ),
-            ItemProduk(
-              produk: Produk(
-                id: 2,
-                kodeProduk: 'A002',
-                namaProduk: 'Kulkas Ebel',
-                hargaProduk: 2500000,
-              ),
-            ),
-            ItemProduk(
-              produk: Produk(
-                id: 3,
-                kodeProduk: 'A003',
-                namaProduk: 'Mesin Cuci Ebel',
-                hargaProduk: 2000000,
-              ),
-            ),
-          ],
-        ),
-      ),
+    );
+  }
+}
+
+class ListProduk extends StatelessWidget {
+  final List<Produk> list;
+
+  const ListProduk({Key? key, required this.list}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, i) {
+        return ItemProduk(produk: list[i]);
+      },
     );
   }
 }
@@ -104,24 +98,13 @@ class ItemProduk extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => ProdukDetail(
-              produk: produk,
-            ),
-          ),
+          MaterialPageRoute(builder: (context) => ProdukDetail(produk: produk)),
         );
       },
       child: Card(
-        color: const Color(0xFFFFD1DC), // Warna background card
         child: ListTile(
-          title: Text(
-            produk.namaProduk!,
-            style: const TextStyle(color: Color(0xFF9B4F80)), // Warna font nama produk
-          ),
-          subtitle: Text(
-            'Rp. ${produk.hargaProduk}',
-            style: const TextStyle(color: Color(0xFF9B4F80)), // Warna font harga produk
-          ),
+          title: Text(produk.namaProduk!),
+          subtitle: Text('Rp ${produk.hargaProduk.toString()}'), // Format as needed
         ),
       ),
     );
