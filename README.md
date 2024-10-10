@@ -54,10 +54,10 @@ Proyek ini adalah aplikasi mobile sederhana yang dibangun menggunakan **Flutter*
    - Setelah berhasil, pengguna diarahkan ke halaman login.
    
    **Screenshot Form Registrasi:**
-   <img src="regis.png" alt="Screenshot Registrasi" width="200"/>
+   <div style="text-align: center;"><img src="regis.png" alt="Screenshot Registrasi" width="200"/></div>
 
    **Screenshot Registrasi Berhasil:**
-   <img src="popup_regis_sukses.png" alt="Screenshot Registrasi Berhasil" width="200"/>
+   <div style="text-align: center;"><img src="popup_regis_sukses.png" alt="Screenshot Registrasi Berhasil" width="200"/></div>
 
    Berikut adalah potongan kode untuk form registrasi:
 
@@ -94,10 +94,10 @@ Proyek ini adalah aplikasi mobile sederhana yang dibangun menggunakan **Flutter*
    - Jika login gagal, popup kesalahan akan muncul.
 
    **Screenshot Form Login:**
-   <img src="login.png" alt="Screenshot Login" width="200"/>
+   <div style="text-align: center;"><img src="login.png" alt="Screenshot Login" width="200"/></div>
 
    **Screenshot Login Gagal:**
-   <img src="gagal_login.png" alt="Screenshot Login Gagal" width="200"/>
+   <div style="text-align: center;"><img src="gagal_login.png" alt="Screenshot Login Gagal" width="200"/></div>
 
 Berikut adalah potongan kode untuk halaman login:
 
@@ -131,7 +131,7 @@ class LoginPage extends StatelessWidget {
    - Pengguna dapat menekan salah satu produk untuk melihat **Detail Produk**.
 
    **Screenshot List Produk:**
-   <img src="list_awal.png" alt="Screenshot List Produk" width="200"/>
+   <div style="text-align: center;"><img src="list_awal.png" alt="Screenshot List Produk" width="200"/></div>
 
    Berikut adalah potongan kode untuk menampilkan daftar produk:
 
@@ -164,10 +164,10 @@ class LoginPage extends StatelessWidget {
    - Setelah mengisi data, pengguna menekan tombol **Simpan**, dan produk baru ditambahkan ke database.
 
    **Screenshot Tambah Produk:**
-   <img src="saat_tambah.png" alt="Screenshot Tambah Produk" width="200"/>
+   <div style="text-align: center;"><img src="saat_tambah.png" alt="Screenshot Tambah Produk" width="200"/></div>
 
    **Screenshot Tambah Produk Berhasil:**
-   <img src="setelah_tambah.png" alt="Screenshot Tambah Produk Berhasil" width="200"/>
+   <div style="text-align: center;"><img src="setelah_tambah.png" alt="Screenshot Tambah Produk Berhasil" width="200"/></div>
 
    Berikut adalah potongan kode untuk form tambah produk:
 
@@ -203,7 +203,7 @@ class LoginPage extends StatelessWidget {
    - Terdapat tombol untuk **Edit** dan **Hapus** produk.
 
    **Screenshot Detail Produk:**
-   <img src="detailnya.png" alt="Screenshot Detail Produk" width="200"/>
+   <div style="text-align: center;"><img src="detailnya.png" alt="Screenshot Detail Produk" width="200"/></div>
 
    Berikut adalah potongan kode untuk detail produk:
    ```dart
@@ -233,10 +233,10 @@ class LoginPage extends StatelessWidget {
    - Setelah mengedit data, pengguna menekan tombol **Simpan** untuk memperbarui produk.
 
    **Screenshot Ubah Produk:**
-   <img src="saat_ubah.png" alt="Screenshot Ubah Produk" width="200"/>
+   <div style="text-align: center;"><img src="saat_ubah.png" alt="Screenshot Ubah Produk" width="200"/></div>
 
    **Screenshot Ubah Produk Berhasil:**
-   <img src="setelah_ubah.png" alt="Screenshot Ubah Produk Berhasil" width="200"/>
+   <div style="text-align: center;"><img src="setelah_ubah.png" alt="Screenshot Ubah Produk Berhasil" width="200"/></div>
 
    Berikut adalah potongan kode untuk edit produk:
    ```dart
@@ -271,10 +271,10 @@ class LoginPage extends StatelessWidget {
    - Jika pengguna menekan **Ya**, produk akan dihapus dari database.
 
    **Screenshot Hapus Produk:**
-   <img src="popup_hapus.png" alt="Screenshot Hapus Produk" width="200"/>
+   <div style="text-align: center;"><img src="popup_hapus.png" alt="Screenshot Hapus Produk" width="200"/></div>
 
    **Screenshot Hapus Produk Berhasil:**
-   <img src="setelah_hapus.png" alt="Screenshot Hapus Produk Berhasil" width="200"/>
+   <div style="text-align: center;"><img src="setelah_hapus.png" alt="Screenshot Hapus Produk Berhasil" width="200"/></div>
 
    Berikut adalah potongan kode untuk hapus produk:
    ```dart
@@ -299,7 +299,7 @@ class LoginPage extends StatelessWidget {
    - Setelah login, pengguna dapat mengakses menu samping (sidemenu) untuk **logout** dari sistem.
    
    **Screenshot Sidemenu:**
-   <img src="sidemenuu.png" alt="Screenshot Sidemenu" width="200"/>
+   <div style="text-align: center;"><img src="sidemenuu.png" alt="Screenshot Sidemenu" width="200"/></div>
 
    Berikut adalah potongan kode untuk Sidemenu:
    ```dart
@@ -324,7 +324,7 @@ class LoginPage extends StatelessWidget {
    - Setelah logout, pengguna akan diarahkan kembali ke halaman login.
 
    **Screenshot Logout Berhasil:**
-   <img src="setelah_logout.png" alt="Screenshot Kembali ke Halaman Login" width="200"/>
+   <div style="text-align: center;"><img src="setelah_logout.png" alt="Screenshot Kembali ke Halaman Login" width="200"/></div>
 
 ---
 
